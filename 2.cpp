@@ -1,27 +1,33 @@
 /*
 *
 * This file represents a solution to question no. 2 in the file processing assignment.
-* © 2023 Abdulrahman Alkhateeb
+* Â© 2023 Abdulrahman Alkhateeb
 *
 */
-#define _CRT_SECURE_NO_WARNINGS // To ignore warnings about use of strcat
 #include <iostream>
 #include <fstream>
-#include <cstring>
+#include <string>
+#include <vector>
+#include <algorithm>
 
 using std::cin;
 using std::cout;
+using std::endl;
 using std::fstream;
 using std::ios;
+using std::string;
+using std::vector;
+using std::sort;
 
-class FileCopier
+class NameSorter
 {
 	fstream ifile;
 	fstream ofile;
-	char buffer[257]; // 256 characters maximum + 1 character for '\0' (NULL terminator)
+	string buffer;
+	vector<string> bufferVector;
 
 public:
-	FileCopier()
+	NameSorter()
 	{
 		cout << "Enter input filename: ";
 		cin >> buffer;
@@ -34,22 +40,24 @@ public:
 
 	void run()
 	{
-		while (!ifile.eof())
+		while (std::getline(ifile, buffer))
 		{
-			ifile.getline(buffer, 257);
-			if (strlen(buffer))
-			{
-				strcat(buffer, "\n");
-				ofile.write(buffer, strlen(buffer));
-			}
+			bufferVector.push_back(buffer);
+		}
+
+		sort(bufferVector.begin(), bufferVector.end());
+
+		for (auto item : bufferVector)
+		{
+			ofile << item << endl;
 		}
 	}
 };
 
 int main(void)
 {
-	FileCopier fileCopier;
-	fileCopier.run();
+	NameSorter nameSorter;
+	nameSorter.run();
 
 	return 0;
 }
